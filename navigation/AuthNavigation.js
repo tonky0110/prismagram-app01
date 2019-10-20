@@ -5,14 +5,16 @@ import Confirm from '../screens/Auth/Confirm';
 import Login from '../screens/Auth/Login';
 import Signup from '../screens/Auth/Signup';
 
-export default createStackNavigator(
-	{
-		AuthHome,
-		Confirm,
-		Login,
-		Signup
-	},
-	{
-		headerMode: 'none'
-	}
+export default createAppContainer(
+	createStackNavigator(
+		{
+			AuthHome,
+			Confirm,
+			Login,
+			Signup
+		},
+		{
+			headerMode: 'none'
+		}
+	)
 );
