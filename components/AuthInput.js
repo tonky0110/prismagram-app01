@@ -9,7 +9,7 @@ const TextInput = styled.TextInput`
 	width: ${constants.width / 2};
 	padding: 10px;
 	background-color: ${(props) => props.theme.greyColor};
-	border: 2px solid ${(props) => props.theme.lightGreyColor};
+	border: 0.5px solid ${(props) => props.theme.lightGreyColor};
 	border-radius: 4px;
 `;
 
