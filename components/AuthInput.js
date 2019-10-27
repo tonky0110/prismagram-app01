@@ -6,7 +6,7 @@ import constants from '../constants';
 const Container = styled.View`margin-bottom: 10px;`;
 
 const TextInput = styled.TextInput`
-	width: ${constants.width / 2};
+	width: ${constants.width / 1.7};
 	padding: 10px;
 	background-color: ${(props) => props.theme.greyColor};
 	border: 0.5px solid ${(props) => props.theme.lightGreyColor};
@@ -32,7 +32,7 @@ const AuthInput = ({
 			returnKeyType={returnKeyType}
 			onSubmitEditing={onSubmitEditing}
 			autoCorrect={autoCorrect}
-			text={value}
+			value={value}
 		/>
 	</Container>
 );

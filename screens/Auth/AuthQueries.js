@@ -6,6 +6,12 @@ export const LOG_IN = gql`
 	}
 `;
 
+export const CREATE_ACCOUNT = gql`
+	mutation createAccount($email: String!, $username: String!, $firstName: String, $lastName: String, $bio: String) {
+		createAccount(email: $email, username: $username, firstName: $firstName, lastName: $lastName, bio: $bio)
+	}
+`;
+
 export const CONFIRM_SECRET = gql`
 	mutation confirmSecret($secret: String!, $email: String!) {
 		confirmSecret(secret: $secret, email: $email)

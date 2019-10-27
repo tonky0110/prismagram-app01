@@ -20,6 +20,7 @@ export default function App() {
 	const [ isLoggedIn, setIsLoggedIn ] = useState(null);
 
 	const preLoad = async () => {
+		await AsyncStorage.clear(); // 임시 강제 로그아웃.
 		try {
 			await Font.loadAsync({
 				...Ionicons.font

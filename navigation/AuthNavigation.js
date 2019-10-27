@@ -8,10 +8,10 @@ import Signup from '../screens/Auth/Signup';
 export default createAppContainer(
 	createStackNavigator(
 		{
+			AuthHome,
 			Login,
 			Confirm,
-			Signup,
-			AuthHome
+			Signup
 		},
 		{
 			headerMode: 'none'
