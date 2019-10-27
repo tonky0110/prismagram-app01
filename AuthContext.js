@@ -6,9 +6,11 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ isLoggedIn: isLoggedInProps, children }) => {
 	const [ isLoggedIn, setIsLoggedIn ] = useState(isLoggedInProps);
 
-	const logUserIn = async () => {
+	const logUserIn = async (token) => {
+		console.log(token);
 		try {
 			await AsyncStorage.setItem('isLoggedIn', 'true');
+			await AsyncStorage.setItem('token', token);
 			setIsLoggedIn(true);
 		} catch (error) {
 			console.log('1)', error);

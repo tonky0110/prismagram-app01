@@ -9,9 +9,9 @@ export default createAppContainer(
 	createStackNavigator(
 		{
 			Login,
-			AuthHome,
 			Confirm,
-			Signup
+			Signup,
+			AuthHome
 		},
 		{
 			headerMode: 'none'
