@@ -69,13 +69,22 @@ export default ({ navigation }) => {
 	};
 	const fbLogin = async () => {
 		try {
+			setLoading(true);
 			const { type, token } = await Facebook.logInWithReadPermissionsAsync('2464096673706698', {
-				permissions: [ 'public_profile' ]
+				permissions: [ 'public_profile', 'email' ]
 			});
 			if (type === 'success') {
 				// Get the user's name using Facebook's Graph API
-				const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-				Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+				const response = await fetch(
+					`https://graph.facebook.com/me?access_token=${token}&fields=id,first_name,last_name,email`
+				);
+				const { email, first_name, last_name } = await response.json();
+				const [ username ] = email.split('@');
+				emailInput.setValue(email);
+				fNameInput.setValue(first_name);
+				lNameInput.setValue(last_name);
+				usernameInput.setValue(username);
+				setLoading(false);
 			} else {
 				// type === 'cancel'
 			}
@@ -92,7 +101,7 @@ export default ({ navigation }) => {
 				<AuthInput {...usernameInput} placeholder={'Username'} autoCorrect={false} returnKeyType={'send'} />
 				<AuthButton text={'Sign Up'} onPress={handleSignup} loading={loading} />
 				<FBContainer>
-					<AuthButton text={'Connect Facebook'} onPress={fbLogin} bgColor={'#2D4DA7'} loading={false} />
+					<AuthButton text={'Connect Facebook'} onPress={fbLogin} bgColor={'#2D4DA7'} loading={loading} />
 				</FBContainer>
 			</View>
 		</TouchableWithoutFeedback>
