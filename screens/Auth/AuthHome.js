@@ -3,7 +3,6 @@ import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components';
 import constants from '../../constants';
 import AuthButton from '../../components/AuthButton';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const View = styled.View`
 	justify-content: center;

@@ -20,7 +20,7 @@ const AuthInput = ({
 	autoCapitalize = 'none',
 	returnKeyType = 'done',
 	onChange,
-	onEndEditing = () => null,
+	onSubmitEditing = () => null,
 	autoCorrect = false
 }) => (
 	<Container>
@@ -30,7 +30,7 @@ const AuthInput = ({
 			placeholder={placeholder}
 			autoCapitalize={autoCapitalize}
 			returnKeyType={returnKeyType}
-			onEndEditing={onEndEditing}
+			onSubmitEditing={onSubmitEditing}
 			autoCorrect={autoCorrect}
 			text={value}
 		/>
