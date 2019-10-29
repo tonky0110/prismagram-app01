@@ -14,7 +14,7 @@ const stackFactory = (initialRoute, customConfig) =>
 	createStackNavigator({
 		InitialRoute: {
 			screen: initialRoute,
-			navigationOptions: { ...customConfig, headerStyle: { backgroundColor: '#EFEEEF' } }
+			navigationOptions: { ...customConfig, headerStyle: { backgroundColor: '#FAFAFA' } }
 		}
 	});
 
@@ -87,8 +87,8 @@ export default createBottomTabNavigator(
 	{
 		tabBarOptions: {
 			showLabel: false,
-			tabStyle: {
-				backgroundColor: '#EFEEEF'
+			style: {
+				backgroundColor: '#FAFAFA'
 			}
 		}
 	}
