@@ -9,12 +9,13 @@ import Search from '../screens/Tabs/Search';
 import MessagesLink from '../components/MessagesLink';
 import React from 'react';
 import NavIcon from '../components/NavIcon';
+import { stackStyles } from './config';
 
 const stackFactory = (initialRoute, customConfig) =>
 	createStackNavigator({
 		InitialRoute: {
 			screen: initialRoute,
-			navigationOptions: { ...customConfig, headerStyle: { backgroundColor: '#FAFAFA' } }
+			navigationOptions: { ...customConfig, headerStyle: { ...stackStyles } }
 		}
 	});
 
