@@ -14,7 +14,7 @@ const stackFactory = (initialRoute, customConfig) =>
 	createStackNavigator({
 		InitialRoute: {
 			screen: initialRoute,
-			navigationOptions: { ...customConfig }
+			navigationOptions: { ...customConfig, headerStyle: { backgroundColor: '#EFEEEF' } }
 		}
 	});
 
@@ -26,7 +26,9 @@ export default createBottomTabNavigator(
 				headerRight: <MessagesLink />
 			}),
 			navigationOptions: {
-				tabBarIcon: <NavIcon name={Platform.OS === 'ios' ? 'ios-home' : 'md-home'} />
+				tabBarIcon: ({ focused }) => (
+					<NavIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-home' : 'md-home'} />
+				)
 			}
 		},
 		Search: {
@@ -34,13 +36,17 @@ export default createBottomTabNavigator(
 				title: 'Search'
 			}),
 			navigationOptions: {
-				tabBarIcon: <NavIcon name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'} />
+				tabBarIcon: ({ focused }) => (
+					<NavIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'} />
+				)
 			}
 		},
 		Add: {
 			screen: View,
 			navigationOptions: {
-				tabBarIcon: <NavIcon name={Platform.OS === 'ios' ? 'ios-add' : 'md-add'} />,
+				tabBarIcon: ({ focused }) => (
+					<NavIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-add' : 'md-add'} size={28} />
+				),
 				tabBarOnPress: ({ navigation }) => navigation.navigate('PhotoNavigation')
 			}
 		},
@@ -49,7 +55,22 @@ export default createBottomTabNavigator(
 				title: 'Notifications'
 			}),
 			navigationOptions: {
-				tabBarIcon: <NavIcon name={Platform.OS === 'ios' ? 'ios-heart' : 'md-heart'} />
+				tabBarIcon: ({ focused }) => (
+					<NavIcon
+						focused={focused}
+						name={
+							Platform.OS === 'ios' ? focused ? (
+								'ios-heart'
+							) : (
+								'ios-heart-empty'
+							) : focused ? (
+								'md-heart'
+							) : (
+								'md-heart-empty'
+							)
+						}
+					/>
+				)
 			}
 		},
 		Profile: {
@@ -57,13 +78,18 @@ export default createBottomTabNavigator(
 				title: 'Profile'
 			}),
 			navigationOptions: {
-				tabBarIcon: <NavIcon name={Platform.OS === 'ios' ? 'ios-person' : 'md-person'} />
+				tabBarIcon: ({ focused }) => (
+					<NavIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-person' : 'md-person'} />
+				)
 			}
 		}
 	},
 	{
 		tabBarOptions: {
-			showLabel: false
+			showLabel: false,
+			tabStyle: {
+				backgroundColor: '#EFEEEF'
+			}
 		}
 	}
 );

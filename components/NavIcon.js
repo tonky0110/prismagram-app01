@@ -4,12 +4,15 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import styles from '../styles';
 
-const NavIcon = ({ name, size = 26, color = styles.blackColor }) => <Ionicons name={name} color={color} size={size} />;
+const NavIcon = ({ focused = true, name, size = 22, color = styles.blackColor }) => (
+	<Ionicons name={name} color={focused ? color : styles.darkGreyColor} size={size} />
+);
 
 NavIcon.propTypes = {
 	name: PropTypes.string.isRequired,
 	size: PropTypes.number,
-	color: PropTypes.string
+	color: PropTypes.string,
+	focused: PropTypes.bool
 };
 
 export default NavIcon;
