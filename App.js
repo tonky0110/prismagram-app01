@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
@@ -18,7 +19,6 @@ export default function App() {
 	const [ loaded, setLoaded ] = useState(false);
 	const [ client, setClient ] = useState(null);
 	const [ isLoggedIn, setIsLoggedIn ] = useState(null);
-
 	const preLoad = async () => {
 		// await AsyncStorage.clear(); // 임시 강제 로그아웃.
 		try {
@@ -31,8 +31,16 @@ export default function App() {
 				cache,
 				storage: AsyncStorage
 			});
+			// const token = await AsyncStorage.getItem('jwt');
 			const client = new ApolloClient({
 				cache,
+				request: async (operation) => {
+					const token = await AsyncStorage.getItem('jwt');
+					console.log('token:', token);
+					return operation.setContext({
+						headers: { Authorization: `Bearer ${token}` }
+					});
+				},
 				...apolloClientOptions
 			});
 			const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
@@ -44,7 +52,7 @@ export default function App() {
 			setLoaded(true);
 			setClient(client);
 		} catch (error) {
-			console.log('3)', error);
+			console.log('error: ', error);
 		}
 	};
 	useEffect(() => {
