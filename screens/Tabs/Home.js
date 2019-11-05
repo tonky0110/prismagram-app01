@@ -4,6 +4,7 @@ import { ScrollView, RefreshControl, AsyncStorage } from 'react-native';
 import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
 import Loader from '../../components/Loader';
+import Post from '../../components/Post';
 
 const FEED_QUERY = gql`
 	{
@@ -41,8 +42,6 @@ const View = styled.View`
 	flex: 1;
 `;
 
-const Text = styled.Text``;
-
 export default () => {
 	const [ refreshing, setRefreshing ] = useState(false);
 	const { loading, data, refetch } = useQuery(FEED_QUERY);
@@ -50,7 +49,6 @@ export default () => {
 		try {
 			setRefreshing(true);
 			const token = await AsyncStorage.getItem('jwt');
-			console.log('setRefreshing - token:', token);
 			await refetch();
 		} catch (error) {
 			console.log(error);
@@ -61,7 +59,11 @@ export default () => {
 	console.log(loading, data);
 	return (
 		<ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}>
-			{loading ? <Loader /> : <Text>Hello</Text>}
+			{loading ? (
+				<Loader />
+			) : (
+				data && data.seeFeed && data.seeFeed.map((post) => <Post key={post.id} {...post} />)
+			)}
 		</ScrollView>
 	);
 };
