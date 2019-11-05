@@ -1,6 +1,9 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, Platform } from 'react-native';
 import styled from 'styled-components';
+import { IonIcons, Ionicons } from '@expo/vector-icons';
+import Swiper from 'react-native-swiper';
+import constants from '../constants';
 import PropTypes from 'prop-types';
 
 const Container = styled.View``;
@@ -13,6 +16,12 @@ const Touchable = styled.TouchableOpacity``;
 const HeaderUserContainer = styled.View`margin-left: 10px;`;
 const Bold = styled.Text`font-weight: 500;`;
 const Location = styled.Text`font-size: 12px;`;
+const IconsContainer = styled.View`
+	padding: 10px;
+	flex-direction: row;
+	align-items: center;
+`;
+const IconContainer = styled.View`margin-right: 10px;`;
 
 const Post = ({ user, files, likeCount, isLiked, comments, caption, location, createdAt }) => {
 	console.log('user: ', user.avatar);
@@ -29,6 +38,33 @@ const Post = ({ user, files, likeCount, isLiked, comments, caption, location, cr
 					</HeaderUserContainer>
 				</Touchable>
 			</Header>
+			<Swiper style={{ height: constants.height / 2.5 }} showsPagination={false}>
+				{files &&
+					files.map((file) => (
+						<Image
+							key={file.id}
+							style={{ width: constants.width, height: constants.height / 2.5 }}
+							source={{ uri: file.url }}
+						/>
+					))}
+			</Swiper>
+			<IconsContainer>
+				<Touchable>
+					<IconContainer>
+						<Ionicons size={28} name={Platform.OS === 'ios' ? 'ios-heart-empty' : 'md-heart-empty'} />
+					</IconContainer>
+				</Touchable>
+				<Touchable>
+					<IconContainer>
+						<Ionicons size={28} name={Platform.OS === 'ios' ? 'ios-heart-empty' : 'md-heart-empty'} />
+					</IconContainer>
+				</Touchable>
+				<Touchable>
+					<IconContainer>
+						<Ionicons size={28} name={Platform.OS === 'ios' ? 'ios-heart-empty' : 'md-heart-empty'} />
+					</IconContainer>
+				</Touchable>
+			</IconsContainer>
 		</Container>
 	);
 };
