@@ -17,10 +17,11 @@ const HeaderUserContainer = styled.View`margin-left: 10px;`;
 const Bold = styled.Text`font-weight: 500;`;
 const Location = styled.Text`font-size: 12px;`;
 const IconsContainer = styled.View`
-	padding: 10px;
 	flex-direction: row;
 	align-items: center;
+	margin-bottom: 5px;
 `;
+const InfoContainer = styled.View`padding: 10px;`;
 const IconContainer = styled.View`margin-right: 10px;`;
 
 const Post = ({ user, files, likeCount, isLiked, comments, caption, location, createdAt }) => {
@@ -48,23 +49,23 @@ const Post = ({ user, files, likeCount, isLiked, comments, caption, location, cr
 						/>
 					))}
 			</Swiper>
-			<IconsContainer>
-				<Touchable>
-					<IconContainer>
-						<Ionicons size={28} name={Platform.OS === 'ios' ? 'ios-heart-empty' : 'md-heart-empty'} />
-					</IconContainer>
-				</Touchable>
-				<Touchable>
-					<IconContainer>
-						<Ionicons size={28} name={Platform.OS === 'ios' ? 'ios-heart-empty' : 'md-heart-empty'} />
-					</IconContainer>
-				</Touchable>
-				<Touchable>
-					<IconContainer>
-						<Ionicons size={28} name={Platform.OS === 'ios' ? 'ios-heart-empty' : 'md-heart-empty'} />
-					</IconContainer>
-				</Touchable>
-			</IconsContainer>
+			<InfoContainer>
+				<IconsContainer>
+					<Touchable>
+						<IconContainer>
+							<Ionicons size={28} name={Platform.OS === 'ios' ? 'ios-heart-empty' : 'md-heart-empty'} />
+						</IconContainer>
+					</Touchable>
+					<Touchable>
+						<IconContainer>
+							<Ionicons size={28} name={Platform.OS === 'ios' ? 'ios-text' : 'md-text'} />
+						</IconContainer>
+					</Touchable>
+					<Touchable>
+						<Bold>{likeCount === 1 ? '1 like' : `${likeCount} likes`}</Bold>
+					</Touchable>
+				</IconsContainer>
+			</InfoContainer>
 		</Container>
 	);
 };
