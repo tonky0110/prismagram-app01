@@ -12,13 +12,38 @@ const Text = styled.Text``;
 
 export default class extends React.Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerTitle: <SearchBar value={''} onChange={this.onChange} onSubmit={() => {}} />
+		headerTitle: (
+			<SearchBar
+				value={navigation.getParam('term', '')}
+				onChange={navigation.getParam('onChange', () => null)}
+				onSubmit={navigation.getParam('onSubmit', () => null)}
+			/>
+		)
 	});
-	state = {
-		term: ''
+	constructor(props) {
+		super(props);
+		const { navigation } = props;
+		this.state = {
+			term: ''
+		};
+		navigation.setParams({
+			term: this.state.term,
+			onChange: this.onChange,
+			onSubmit: this.onSubmit
+		});
+	}
+
+	onChange = (text) => {
+		const { navigation } = this.props;
+		this.setState({ term: text });
+		navigation.setParams({
+			term: text
+		});
+		console.log(`this.state.term: ${this.state.term}`);
+		console.log(`navigation.getParam('term'): ${navigation.getParam('term')}`);
 	};
-	onChange = (term) => {
-		this.setState({ term });
+	onSubmit = () => {
+		console.log('onSubmit');
 	};
 	render() {
 		return (
