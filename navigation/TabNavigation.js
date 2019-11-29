@@ -4,9 +4,9 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
 import Home from '../screens/Tabs/Home';
 import Notifications from '../screens/Tabs/Notifications';
+import Detail from '../screens/Detail';
 import Profile from '../screens/Tabs/Profile';
-// import Search from '../screens/Tabs/Search';
-import Search from '../screens/Tabs/_Search';
+import Search from '../screens/Tabs/Search';
 
 import MessagesLink from '../components/MessagesLink';
 import React from 'react';
@@ -18,7 +18,8 @@ const stackFactory = (initialRoute, customConfig) =>
 		InitialRoute: {
 			screen: initialRoute,
 			navigationOptions: { ...customConfig, headerStyle: { ...stackStyles } }
-		}
+		},
+		Detail
 	});
 
 export default createBottomTabNavigator(
