@@ -5,6 +5,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Home from '../screens/Tabs/Home';
 import Notifications from '../screens/Tabs/Notifications';
 import Detail from '../screens/Detail';
+import UserDetail from '../screens/UserDetail';
 import Profile from '../screens/Tabs/Profile';
 import Search from '../screens/Tabs/Search';
 
@@ -24,13 +25,20 @@ const stackFactory = (initialRoute, customConfig) =>
 			Detail: {
 				screen: Detail,
 				navigationOptions: {
-					headerTintColor: styles.blackColor,
 					title: 'Photo'
+				}
+			},
+			UserDetail: {
+				screen: UserDetail,
+				navigationOptions: {
+					title: 'User'
 				}
 			}
 		},
 		{
 			defaultNavigationOptions: {
+				headerBackTitle: null,
+				headerTintColor: styles.blackColor,
 				headerStyle: { ...stackStyles }
 			}
 		}
