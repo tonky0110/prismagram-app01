@@ -4,6 +4,7 @@ import { gql } from 'apollo-boost';
 import { useQuery } from 'react-apollo-hooks';
 import { USER_FRAGMENT } from '../../fragments';
 import { ScrollView } from 'react-native-gesture-handler';
+import Loader from '../../components/Loader';
 import UserProfile from '../../components/UserProfile';
 
 export const ME = gql`
