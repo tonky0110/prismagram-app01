@@ -13,7 +13,7 @@ const Text = styled.Text``;
 export default ({ navigation }) => (
 	<View>
 		<TouchableOpacity onPress={() => navigation.navigate('UploadPhoto')}>
-			<Text>TakePhoto</Text>
+			<Text>Take</Text>
 		</TouchableOpacity>
 	</View>
 );
