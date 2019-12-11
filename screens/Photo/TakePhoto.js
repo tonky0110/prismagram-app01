@@ -1,23 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import { Camera } from 'expo-camera';
-import { Ionicons } from '@expo/vector-icons';
-import * as Permissions from 'expo-permissions';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { Camera } from 'expo-camera';
+import * as Permissions from 'expo-permissions';
+import * as MediaLibrary from 'expo-media-library';
+import { Ionicons } from '@expo/vector-icons';
 import constants from '../../constants';
 import Loader from '../../components/Loader';
-import { TouchableOpacity } from 'react-native';
-import { Platform } from '@unimodules/core';
+import { TouchableOpacity, Platform } from 'react-native';
 import styles from '../../styles';
 
-const View = styled.View`flex: 1;`;
+const View = styled.View`
+	flex: 1;
+	justify-content: center; 
+	align-items: center;
+`;
 const Icon = styled.View``;
+const Button = styled.View`
+	width: 80px;
+	height: 80px;
+	border-radius: 40;
+	border: 10px solid ${styles.lightGreyColor};
+`;
 export default ({ navigation }) => {
+	const cameraRef = useRef();
+	const [ canTakePhoto, setCanTakePhoto ] = useState(true);
 	const [ loading, setLoading ] = useState(true);
 	const [ hasPermission, setHasPermission ] = useState(false);
-	const [ cameraType, setCameraType ] = useState(Camera.Constants.Type.front);
+	const [ cameraType, setCameraType ] = useState(Camera.Constants.Type.back);
+	const takePhoto = async () => {
+		if(!canTakePhoto){
+			return;
+		}
+		try{
+			setCanTakePhoto(false);
+
+			const { uri } = await cameraRef.current.takePictureAsync({
+				quality: 1
+			});
+			const asset = await MediaLibrary.createAssetAsync(uri);
+			console.log(uri);
+		}catch(e){
+			console.log(e);
+			setCanTakePhoto(true);
+		}finally{
+			setTimeout(() => {setCanTakePhoto(true)}, 1000);
+		}
+	}
 	const askPermission = async () => {
 		try {
-			const { status } = await Permissions.askAync(Permissions.CAMERA);
+			const { status } = await Permissions.askAsync(Permissions.CAMERA);
 			if (status === 'granted') {
 				setHasPermission(true);
 			}
@@ -43,24 +74,33 @@ export default ({ navigation }) => {
 			{loading ? (
 				<Loader />
 			) : hasPermission ? (
-				<Camera
-					style={{
-						justifyContent: 'flex-end',
-						padding: 15,
-						width: constants.width,
-						height: constans.height / 2
-					}}
-				>
-					<TouchableOpacity onPress={toggleCamera}>
-						<Icon>
-							<Ionicons
-								name={Platform.OS === 'ios' ? 'ios-reverse-camera' : 'md-reverse-camera'}
-								size={28}
-								color={'white'}
-							/>
-						</Icon>
-					</TouchableOpacity>
-				</Camera>
+				<>
+					<Camera
+						ref={cameraRef}
+						type={cameraType}
+						style={{
+							justifyContent: 'flex-end',
+							padding: 15,
+							width: constants.width,
+							height: constants.height / 2
+						}}
+					>
+						<TouchableOpacity onPress={toggleCamera}>
+							<Icon>
+								<Ionicons
+									name={Platform.OS === 'ios' ? 'ios-reverse-camera' : 'md-reverse-camera'}
+									size={28}
+									color={'white'}
+								/>
+							</Icon>
+						</TouchableOpacity>
+					</Camera>
+					<View>
+						<TouchableOpacity onPress={takePhoto} disabled={!canTakePhoto}>
+							<Button />
+						</TouchableOpacity>
+					</View>
+				</>
 			) : null}
 		</View>
 	);
