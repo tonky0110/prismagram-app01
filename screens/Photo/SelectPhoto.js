@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Image, ScrollView } from 'react-native';
+import { Image, ScrollView, TouchableOpacity } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import * as MediaLibrary from 'expo-media-library';
 import styled from 'styled-components';
@@ -15,6 +15,9 @@ export default () => {
 	const [ hasPermission, setHasPermission ] = useState(false);
 	const [ selected, setSelected ] = useState();
 	const [ allPhotos, setAllPhotos ] = useState();
+	const changeSelectd = photo => {
+		setSelected(photo);
+	}
 	const getPhotos = async () => {
 		try {
 			const { assets } = await MediaLibrary.getAssetsAsync();
@@ -31,14 +34,13 @@ export default () => {
 	const askPermission = async () => {
 		try {
 			const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-			console.log(`status: ${status}`);
 			if (status === 'granted') {
 				setHasPermission(true);
 				getPhotos();
 			}
 		} catch (error) {
 			console.log(error);
-			hasPermission(false);
+			setHasPermission(false);
 		}
 	};
 
@@ -57,11 +59,24 @@ export default () => {
 							style={{ width: constants.width, height: constants.height / 2 }}
 							source={{ uri: selected.uri }}
 							/>
-							<ScrollView contentContainerStyle={{flexDirection: "row"}}>
-								{allPhotos.map(photo => (
-									<Image source={{uri: photo.uri}} style={{width: constants.width/3, height: constants.height /6}} />
-								))}
-							</ScrollView>
+								<ScrollView contentContainerStyle={{flexDirection: "row"}}>
+									{allPhotos.map(photo => (
+										<TouchableOpacity 
+											key={photo.id}
+											onPress={() => changeSelectd(photo)}
+										>
+											<Image
+												source={{uri: photo.uri}}
+												style={{
+													width: constants.width/3, 
+													height: constants.height /6,
+													opacity: photo.id === selected.id ? 0.5 : 1
+												}} 
+											/>
+										</TouchableOpacity>	
+										))
+									}
+								</ScrollView>
 						</>
 					) : null}
 				</View>

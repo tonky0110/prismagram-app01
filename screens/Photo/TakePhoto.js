@@ -1,19 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import * as Permissions from 'expo-permissions';
 import styled from 'styled-components';
-import { TouchableOpacity } from 'react-native';
+import { Camera } from 'expo';
+import constants from '../../constants';
+import Loader from '../../components/Loader';
 
-const View = styled.View`
-	justify-content: center;
-	align-items: center;
-	flex: 1;
-`;
+const View = styled.View`flex: 1;`;
 
-const Text = styled.Text``;
-
-export default ({ navigation }) => (
-	<View>
-		<TouchableOpacity onPress={() => navigation.navigate('UploadPhoto')}>
-			<Text>Take</Text>
-		</TouchableOpacity>
-	</View>
-);
+export default ({ navigation }) => {
+	const [ loading, setLoading ] = useState(true);
+	const [ hasPermission, setHasPermission ] = useState(false);
+	const askPermission = async () => {
+		try {
+			const { status } = await Permissions.askAync(Permissions.CAMERA);
+			if (status === 'granted') {
+				setHasPermission(true);
+			}
+		} catch (e) {
+			console.log(e);
+			setHasPermission(false);
+		} finally {
+			setLoading(false);
+		}
+	};
+	useEffect(() => {
+		askPermission();
+	}, []);
+	return (
+		<View>
+			{loading ? (
+				<Loader />
+			) : hasPermission ? (
+				<Camera style={{ width: constants.width, height: constans.height / 2 }} />
+			) : null}
+		</View>
+	);
+};
