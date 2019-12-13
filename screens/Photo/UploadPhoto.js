@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import styles from '../../styles';
 import constants from '../../constants';
 import useInput from '../../hooks/useInput';
+import Axios from 'axios';
 
 const View = styled.View`flex: 1;`;
 
@@ -30,33 +31,48 @@ const Button = styled.TouchableOpacity`
 const Text = styled.Text``;
 
 export default ({ navigation }) => {
-	const [ loading, setLoading ] = useState(true);
+	const [ loading, setLoading ] = useState(false);
 	const [ fileUrl, setFileUrl ] = useState('');
+	const photo = navigation.getParam('photo');
 	const captionInput = useInput('');
 	const locationInput = useInput('');
 	const handleSubmit = async () => {
 		if (captionInput.value === '' || locationInput.value === '') {
 			Alert.alert('All fields are required.');
 		}
+		const formData = new FormData();
+		const name = photo.filename;
+		const [ , type ] = name.split('.');
+		formData.append('file', {
+			name,
+			type: type.toLowerCase(),
+			uri: photo.uri
+		});
+		try {
+			const { data: { path } } = await Axios.post('http://localhost:4000/api/upload', formData, {
+				headers: {
+					'content-type': 'multipart/form-data'
+				}
+			});
+		} catch (e) {
+			console.log(e);
+		}
 	};
 	return (
 		<View>
 			<Container>
-				<Image
-					source={{ uri: navigation.getParam('photo').uri }}
-					style={{ width: 80, height: 80, marginRight: 30 }}
-				/>
+				<Image source={{ uri: photo.uri }} style={{ width: 80, height: 80, marginRight: 30 }} />
 				<Form>
 					<STextInput
-						onChangeText={null}
-						value={''}
+						onChangeText={captionInput.onChange}
+						value={captionInput.value}
 						placeholder="Caption"
 						multiline={true}
 						placeHolderTextColor={styles.darkGreyColor}
 					/>
 					<STextInput
-						onChangeText={null}
-						value={''}
+						onChangeText={locationInput.onChange}
+						value={locationInput.value}
 						placeholder="Location"
 						multiline={true}
 						placeHolderTextColor={styles.darkGreyColor}
