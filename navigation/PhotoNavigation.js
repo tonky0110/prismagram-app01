@@ -8,25 +8,20 @@ import styles from '../styles';
 
 const PhotoTabs = createMaterialTopTabNavigator(
 	{
-		Take: {
-			screen: TakePhoto,
-			navigationOptions: {
-				tabBarLabel: 'Take'
-			}
-		},
 		Select: {
 			screen: SelectPhoto,
 			navigationOptions: {
 				tabBarLabel: 'Select'
 			}
+		},
+		Take: {
+			screen: TakePhoto,
+			navigationOptions: {
+				tabBarLabel: 'Take'
+			}
 		}
 	},
 	{
-		navigationOptions: {
-			headerStyle: {
-				...stackStyles
-			}
-		},
 		tabBarPosition: 'bottom',
 		tabBarOptions: {
 			indicatorStyle: {
@@ -45,12 +40,28 @@ const PhotoTabs = createMaterialTopTabNavigator(
 	}
 );
 
-export default createStackNavigator({
-	Tabs: {
-		screen: PhotoTabs,
-		navigationOptions: {
-			title: 'Choose Photo'
+export default createStackNavigator(
+	{
+		Tabs: {
+			screen: PhotoTabs,
+			navigationOptions: {
+				title: 'Choose Photo',
+				headerBackTitle: null
+			}
+		},
+		Upload: {
+			screen: UploadPhoto,
+			navigationOptions: {
+				title: 'Upload'
+			}
 		}
 	},
-	UploadPhoto
-});
+	{
+		defaultNavigationOptions: {
+			headerStyle: {
+				...stackStyles
+			},
+			headerTintColor: styles.blackColor
+		}
+	}
+);

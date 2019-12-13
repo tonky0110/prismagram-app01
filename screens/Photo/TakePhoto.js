@@ -38,12 +38,11 @@ export default ({ navigation }) => {
 				quality: 1
 			});
 			const asset = await MediaLibrary.createAssetAsync(uri);
-			console.log(uri);
+			setCanTakePhoto(true);
+			navigation.navigate("Upload", {photo: asset});
 		}catch(e){
 			console.log(e);
 			setCanTakePhoto(true);
-		}finally{
-			setTimeout(() => {setCanTakePhoto(true)}, 1000);
 		}
 	}
 	const askPermission = async () => {
