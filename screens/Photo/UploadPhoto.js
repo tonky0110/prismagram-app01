@@ -1,10 +1,23 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, Alert, Image } from 'react-native';
 import styled from 'styled-components';
+import { gql } from 'apollo-boost';
 import styles from '../../styles';
 import constants from '../../constants';
 import useInput from '../../hooks/useInput';
 import Axios from 'axios';
+import { useMutation } from 'react-apollo-hooks';
+import { FEED_QUERY } from '../Tabs/Home';
+
+const UPLOAD = gql`
+	mutation upload($caption: String!, $files: [String!]!, $location: String!) {
+		upload(caption: $caption, files: $files, location: $location) {
+			id
+			caption
+			location
+		}
+	}
+`;
 
 const View = styled.View`flex: 1;`;
 
@@ -14,6 +27,7 @@ const Container = styled.View`
 `;
 
 const Form = styled.View`justify-content: flex-start;`;
+
 const STextInput = styled.TextInput`
 	margin-bottom: 10px;
 	border: 0px solid ${styles.lightGreyColor};
@@ -21,6 +35,7 @@ const STextInput = styled.TextInput`
 	padding-bottom: 10px;
 	width: ${constants.width - 180};
 `;
+
 const Button = styled.TouchableOpacity`
 	background-color: ${(props) => props.theme.blueColor};
 	padding: 10px;
@@ -28,14 +43,20 @@ const Button = styled.TouchableOpacity`
 	align-items: center;
 	justify-content: center;
 `;
-const Text = styled.Text``;
+
+const Text = styled.Text`
+	color: white;
+	font-weight: 600;
+`;
 
 export default ({ navigation }) => {
-	const [ loading, setLoading ] = useState(false);
-	const [ fileUrl, setFileUrl ] = useState('');
+	const [ loading, setIsLoading ] = useState(false);
 	const photo = navigation.getParam('photo');
 	const captionInput = useInput('');
 	const locationInput = useInput('');
+	const [ uploadMutation ] = useMutation(UPLOAD, {
+		refetchQueries: () => [ { query: FEED_QUERY } ]
+	});
 	const handleSubmit = async () => {
 		if (captionInput.value === '' || locationInput.value === '') {
 			Alert.alert('All fields are required.');
@@ -49,16 +70,26 @@ export default ({ navigation }) => {
 			uri: photo.uri
 		});
 		try {
+			setIsLoading(true);
 			const { data: { location } } = await Axios.post('http://localhost:4000/api/upload', formData, {
 				headers: {
 					'content-type': 'multipart/form-data'
 				}
 			});
-			setFileUrl(location);
-			console.log('location: ', location);
+			const { data: { upload } } = await uploadMutation({
+				variables: {
+					caption: captionInput.value,
+					location: locationInput.value,
+					files: [ location ]
+				}
+			});
+			if (upload.id) {
+				navigation.navigate('TabNavigation');
+			}
 		} catch (e) {
 			console.log(e);
 		} finally {
+			setIsLoading(false);
 		}
 	};
 	return (
