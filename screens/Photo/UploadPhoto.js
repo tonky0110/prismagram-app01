@@ -49,13 +49,16 @@ export default ({ navigation }) => {
 			uri: photo.uri
 		});
 		try {
-			const { data: { path } } = await Axios.post('http://localhost:4000/api/upload', formData, {
+			const { data: { location } } = await Axios.post('http://localhost:4000/api/upload', formData, {
 				headers: {
 					'content-type': 'multipart/form-data'
 				}
 			});
+			setFileUrl(location);
+			console.log('location: ', location);
 		} catch (e) {
 			console.log(e);
+		} finally {
 		}
 	};
 	return (
